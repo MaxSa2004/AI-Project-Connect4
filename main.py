@@ -4,13 +4,12 @@ gameOver = False
 winner = ""
 
 
-
 def print_grid():
     if not gameOver:
         print("")
         for i in range(6):
             print(''.join(grid[i]))
-        print("0123456\n")
+        print("1234567\n")
 
 def gameHandler(gameMode):
     print_grid()
@@ -26,10 +25,10 @@ def mode1():
     while not gameOver:
         if xToPlay:
             column = int(input("It is now X's turn.\nChoose a column to play:"))
-            placePiece(column)
+            placePiece(column-1)
         else:
             column = int(input("It is now O's turn.\nChoose a column to play:"))
-            placePiece(column)
+            placePiece(column-1)
 
 def placePiece(col):
     global xToPlay
