@@ -23,11 +23,23 @@ def gameHandler(gameMode):
     if gameMode == 1:
         mode1()
     elif gameMode == 2:
-        print()
+        mode2()
     elif gameMode == 3:
         print()
 
-# to complete
+def mode2():
+    while not gameOver:
+        if xToPlay:
+            column = int(input("It is now X's turn.\nChoose a column to play:"))
+            if (column >= 1 and column <= 7):
+                placePiece(column-1)
+            else:
+                print("Select a column between 1 and 7")
+        else:
+            #chamar funcao de mcts
+            return
+
+
 def mode1():
     while not gameOver:
         if xToPlay:
