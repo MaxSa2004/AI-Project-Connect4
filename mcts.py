@@ -1,6 +1,6 @@
 # Class for MCTS implementation
 # Connect 4 project 24/25 - Maximiliano Sá, Orlando Soares, Rui Rua
-
+import numpy as np
 grid = []
 
 class mcts():
@@ -13,13 +13,14 @@ class mcts():
         self.wins = 0
         self._untried_actions = None
         self._untried_actions = self.untried_actions()
+        return
 
     def untried_actions(self):
-        self._untried_actions = self.state.get_legal_actions()
+        self._untried_actions = self.get_legal_actions()
         return self._untried_actions
 
     def validPos(self, col):
-        return not grid[0][col] == 'O' or grid[0][col] == 'X'
+        return not self.state[0][col] == 'O' or self.state[0][col] == 'X'
 
     def get_legal_actions(self):
         res = []
@@ -27,4 +28,12 @@ class mcts():
             if self.validPos(i):
                 res.append(i)
         return res
+    
+    def move(self, col):
+        return
+    
+    def expand(self):
+        action = self._untried_actions.pop()
+        next_state = self.move(action)
+
     

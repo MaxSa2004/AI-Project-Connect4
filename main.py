@@ -32,10 +32,16 @@ def mode1():
     while not gameOver:
         if xToPlay:
             column = int(input("It is now X's turn.\nChoose a column to play:"))
-            placePiece(column-1)
+            if (column >= 1 and column <= 7):
+                placePiece(column-1)
+            else:
+                print("Select a column between 1 and 7")
         else:
             column = int(input("It is now O's turn.\nChoose a column to play:"))
-            placePiece(column-1)
+            if (column >= 1 and column <= 7):
+                placePiece(column-1)
+            else:
+                print("Select a column between 1 and 7")
 
 def placePiece(col):
     global xToPlay
