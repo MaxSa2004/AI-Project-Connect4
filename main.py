@@ -1,8 +1,15 @@
+# Class for MCTS implementation
+# Connect 4 project 24/25 - Maximiliano Sá, Orlando Soares, Rui Rua
+
+import mcts
+
 grid = [['-' for _ in range(7)] for _ in range(6)]
 xToPlay = True      # True if turn of X and False if turn of O
 gameOver = False
 winner = ""
 
+def validPos(col):
+    return not grid[0][col] == 'O' or grid[0][col] == 'X'
 
 def print_grid():
     if not gameOver:
