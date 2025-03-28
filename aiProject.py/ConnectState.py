@@ -40,7 +40,7 @@ class ConnectState:
         player = self.board[row][col]
         """
         Ultima jogada realizada está na posição (row, col)
-        Verificar a grid 7x7 à volta à procura de um vencedor
+        Verificar a grid 6x7 à volta à procura de um vencedor
         """
 
         consecutive = 1
