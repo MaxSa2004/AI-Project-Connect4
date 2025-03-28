@@ -18,7 +18,7 @@ def playPvP():
         state.print_board()
 
         if state.game_over():
-            print("Player one won!")
+            print("Player one ('X') won!")
             break
 
         p2Move = int(input("Enter a move: "))-1
@@ -31,7 +31,7 @@ def playPvP():
         state.print_board()
 
         if state.game_over():
-            print("Player two won!")
+            print("Player two ('O') won!")
             break
 
 def playPvC():
@@ -53,7 +53,7 @@ def playPvC():
         state.print_board()
 
         if state.game_over():
-            print("Player one won!")
+            print("Player one ('X') won!")
             break
 
         print("Thinking...")
@@ -63,13 +63,14 @@ def playPvC():
         print("Statistics: ", num_rollouts, "rollouts in", run_time, "seconds")
         move = mcts.best_move()
 
-        print("MCTS chose move: ", move)
+        print("MCTS chose move: ", move+1)
 
         state.move(move)
         mcts.move(move)
 
         if state.game_over():
-            print("Player two won!")
+            state.print_board()
+            print("Player two ('O') won!")
             break
 
 
@@ -80,7 +81,7 @@ def playPvC():
     3. CvC
 '''
 if __name__ == "__main__":
-    print("Gamemodes\nPvP: 1\nPvC: 2")
+    print("Welcome to Connect 4!\nPlease select one of the following game modes by selecting its corresponding number:\n1. Human vs. Human\n2. Human vs. Computer\n3. Computer vs. Computer")
     GameMeta.GAMEMODE = int(input("Select option:"))
     while 1 > GameMeta.GAMEMODE or GameMeta.GAMEMODE > 3:
         print("Invalid Gamemode")
@@ -89,4 +90,5 @@ if __name__ == "__main__":
         playPvP()
     elif GameMeta.GAMEMODE == 2:
         playPvC()
-    
+    elif GameMeta.GAMEMODE == 3:
+        print("GAMEMODE 3 STILL TO BE DEVELOPED")
