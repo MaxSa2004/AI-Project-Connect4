@@ -86,7 +86,6 @@ class MCTS:
 
     #faz backtrack aos nós escolhidos na fase de rollout e dá update aos seus valores
     def back_propagate(self, node: Node, turn: int, outcome: int) -> None:
-
         # Para o jogador atual
         reward = 0 if outcome == turn else 1
 
