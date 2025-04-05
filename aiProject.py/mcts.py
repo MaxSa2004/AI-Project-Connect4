@@ -43,6 +43,16 @@ class MCTS:
         self.node_count = 0
         self.num_rollouts = 0
 
+    # verfica se o computador pode ganhar numa jogada só
+    def check_instant_win(self, state: ConnectState) -> int:
+        for move in state.get_legal_moves():
+            st = deepcopy(state)
+            st.move(move)
+            if st.game_over():
+                return move
+        return -1
+            
+
     #escolhe o próximo nó/estado a ser explorado
     def select_node(self) -> tuple:
         node = self.root

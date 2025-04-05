@@ -58,15 +58,22 @@ def playPvC():
 
         print("Thinking...")
 
-        mcts.search(10)
-        num_rollouts, run_time = mcts.statistics()
-        print("Statistics: ", num_rollouts, "rollouts in", run_time, "seconds")
-        move = mcts.best_move()
+        instaWin = mcts.check_instant_win(state)
+        if instaWin != -1:
+            print("MCTS chose move: ", instaWin+1)
 
-        print("MCTS chose move: ", move+1)
+            state.move(instaWin)
+            mcts.move(instaWin)
+        else:
+            mcts.search(10)
+            num_rollouts, run_time = mcts.statistics()
+            print("Statistics: ", num_rollouts, "rollouts in", run_time, "seconds")
+            move = mcts.best_move()
 
-        state.move(move)
-        mcts.move(move)
+            print("MCTS chose move: ", move+1)
+
+            state.move(move)
+            mcts.move(move)
 
         if state.game_over():
             state.print_board()

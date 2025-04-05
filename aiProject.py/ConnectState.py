@@ -108,7 +108,7 @@ class ConnectState:
             return True
 
         return False
-    
+
     #verifica se o jogo já acabou verificando se há vencedor ou se ainda existem jogadas possíveis
     def game_over(self):
         return self.check_win() or len(self.get_legal_moves()) == 0
