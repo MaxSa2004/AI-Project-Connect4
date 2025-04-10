@@ -34,7 +34,6 @@ class Node:
 
 
 class MCTS:
-
     #Construtor da classe MCTS que guarda algumas estatísticas e é o ponto inicial do algoritmo
     def __init__(self, state=ConnectState()):
         self.root_state = deepcopy(state)
@@ -147,3 +146,7 @@ class MCTS:
     #retorna estatísticas
     def statistics(self) -> tuple:
         return self.num_rollouts, self.run_time
+    
+    # mudar o valor de c para 'atacar' mais em vez de focar em exploração
+    def change_c_value(self):
+        MCTSMeta.C = 0.8

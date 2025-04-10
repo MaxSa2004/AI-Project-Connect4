@@ -37,6 +37,8 @@ def playPvP():
 def playPvC():
     state = ConnectState()
     mcts = MCTS(state)
+    changed_To_Attack = False # se o valor de C foi mudado ou não
+    num_Plays = 0
 
     while not state.game_over():
         print("Current state:")
@@ -79,6 +81,12 @@ def playPvC():
             state.print_board()
             print("Player two ('O') won!")
             break
+
+        if not changed_To_Attack:
+            num_Plays += 2
+            if num_Plays > 17:
+                mcts.change_c_value()
+                changed_To_Attack = True
 
 
 '''
