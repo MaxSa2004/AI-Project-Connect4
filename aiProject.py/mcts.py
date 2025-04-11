@@ -149,4 +149,4 @@ class MCTS:
     
     # mudar o valor de c para 'atacar' mais em vez de focar em exploração
     def change_c_value(self):
-        MCTSMeta.C = 0.8
+        MCTSMeta.C = 1
