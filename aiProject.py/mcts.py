@@ -15,8 +15,8 @@ class Node:
     def __init__(self, move, parent):
         self.move = move
         self.parent = parent
-        self.N = 0
-        self.Q = 0
+        self.N = 0 # num times visited (current node)
+        self.W = 0 # num wins for current node
         self.children = {}
         self.outcome = GameMeta.PLAYERS['none']
 
@@ -30,7 +30,7 @@ class Node:
         if self.N == 0:
             return 0 if c == 0 else GameMeta.INF
         else:
-            return self.Q / self.N + c * math.sqrt(math.log(self.parent.N) / self.N)
+            return self.W / self.N + c * math.sqrt(math.log(self.parent.N) / self.N)
 
 
 class MCTS:
@@ -50,7 +50,14 @@ class MCTS:
             if st.game_over():
                 return move
         return -1
-            
+    
+    # verfica se o computador só tem uma coluna para jogar
+    def check_one_move_available(self, state: ConnectState) -> int:
+        legalMoves = state.get_legal_moves()
+        if len(legalMoves) == 1:
+            return legalMoves[0]
+        else:
+            return -1
 
     #escolhe o próximo nó/estado a ser explorado
     def select_node(self) -> tuple:
@@ -100,7 +107,7 @@ class MCTS:
 
         while node is not None:
             node.N += 1
-            node.Q += reward
+            node.W += reward
             node = node.parent
             if outcome == GameMeta.OUTCOMES['draw']:
                 reward = 0

@@ -60,22 +60,26 @@ def playPvC():
 
         print("Thinking...")
 
-        instaWin = mcts.check_instant_win(state)
+        instaWin = mcts.check_instant_win(state) # check if can win in 1 move
         if instaWin != -1:
             print("MCTS chose move: ", instaWin+1)
 
             state.move(instaWin)
             mcts.move(instaWin)
         else:
-            mcts.search(10)
-            num_rollouts, run_time = mcts.statistics()
-            print("Statistics: ", num_rollouts, "rollouts in", run_time, "seconds")
-            move = mcts.best_move()
-
-            print("MCTS chose move: ", move+1)
-
-            state.move(move)
-            mcts.move(move)
+            oneMoveOnly = mcts.check_one_move_available(state) # check if only exists 1 move (no need to think if only 1 option)
+            if oneMoveOnly != -1:
+                print("MCTS chose move: ", oneMoveOnly+1)
+                state.move(oneMoveOnly)
+                mcts.move(oneMoveOnly)
+            else:
+                mcts.search(10)
+                num_rollouts, run_time = mcts.statistics()
+                print("Statistics: ", num_rollouts, "rollouts in", run_time, "seconds")
+                move = mcts.best_move()
+                print("MCTS chose move: ", move+1)
+                state.move(move)
+                mcts.move(move)
 
         if state.game_over():
             state.print_board()
