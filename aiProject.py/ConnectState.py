@@ -18,6 +18,18 @@ class ConnectState:
     #retorna uma cópia do estado atual
     def get_board(self):
         return deepcopy(self.board)
+    
+    #dá print_board ao board atual na consola
+    def print_board(self):
+        print('=============================')
+
+        for row in range(GameMeta.ROWS):
+            for col in range(GameMeta.COLS):
+                print('| {} '.format('X' if self.board[row][col] == 1 else 'O' if self.board[row][col] == 2 else ' '), end='')
+            print('|')
+
+        print('=============================')
+        print('  1   2   3   4   5   6   7')
 
     #marca a jogada escolhida pelo jogador no board, e dá update a alguns metadados do estado atual
     def move(self, col):
@@ -114,20 +126,10 @@ class ConnectState:
         return self.check_win() or len(self.get_legal_moves()) == 0
 
     #verifica quem ganhou ou se é empate
-    def get_outcome(self):
+    def get_result(self):
         if len(self.get_legal_moves()) == 0 and self.check_win() == 0:
             return GameMeta.OUTCOMES['draw']
 
         return GameMeta.OUTCOMES['one'] if self.check_win() == GameMeta.PLAYERS['one'] else GameMeta.OUTCOMES['two']
 
-    #dá print_board ao board atual na consola
-    def print_board(self):
-        print('=============================')
-
-        for row in range(GameMeta.ROWS):
-            for col in range(GameMeta.COLS):
-                print('| {} '.format('X' if self.board[row][col] == 1 else 'O' if self.board[row][col] == 2 else ' '), end='')
-            print('|')
-
-        print('=============================')
-        print('  1   2   3   4   5   6   7')
+    

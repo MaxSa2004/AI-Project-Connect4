@@ -9,10 +9,22 @@ def playPvP():
         print("Current state:")
         state.print_board()
 
-        p1Move = int(input("Enter a move: "))-1
-        while p1Move not in state.get_legal_moves():
-            print("Illegal move")
-            p1Move = int(input("Enter a move: "))-1
+        # --- Player 1 Move ---
+        while True:
+            p1_input = input("Player 1 ('X') enter a move: ")
+            if not p1_input.strip():
+                print("You need to enter a move.")
+                continue
+            try:
+                p1Move = int(p1_input) - 1
+            except ValueError:
+                print("That's not a valid number. Try again.")
+                continue
+
+            if p1Move not in state.get_legal_moves():
+                print("Illegal move")
+                continue
+            break
 
         state.move(p1Move)
         state.print_board()
@@ -21,11 +33,22 @@ def playPvP():
             print("Player one ('X') won!")
             break
 
-        p2Move = int(input("Enter a move: "))-1
+        # --- Player 2 Move ---
+        while True:
+            p2_input = input("Player 2 ('O') enter a move: ")
+            if not p2_input.strip():
+                print("You need to enter a move.")
+                continue
+            try:
+                p2Move = int(p2_input) - 1
+            except ValueError:
+                print("That's not a valid number. Try again.")
+                continue
 
-        while p2Move not in state.get_legal_moves():
-            print("Illegal move")
-            p1Move = int(input("Enter a move: "))-1
+            if p2Move not in state.get_legal_moves():
+                print("Illegal move")
+                continue
+            break
 
         state.move(p2Move)
         state.print_board()
@@ -33,6 +56,7 @@ def playPvP():
         if state.game_over():
             print("Player two ('O') won!")
             break
+
 
 def playPvC():
     state = ConnectState()
@@ -44,10 +68,21 @@ def playPvC():
         print("Current state:")
         state.print_board()
 
-        user_move = int(input("Enter a move: "))-1
-        while user_move not in state.get_legal_moves():
-            print("Illegal move")
-            user_move = int(input("Enter a move: "))-1
+        while True:
+            user_input = input("Enter a move: ")
+            # Check if input is blank or not a number
+            if not user_input.strip():
+                print("You need to enter a move.")
+                continue
+            try:
+                user_move = int(user_input) - 1
+            except ValueError:
+                print("That's not a valid number. Try again.")
+                continue
+            if user_move not in state.get_legal_moves():
+                print("Illegal move")
+                continue
+            break  # valid input and legal move
 
         state.move(user_move)
         mcts.move(user_move)
@@ -63,7 +98,6 @@ def playPvC():
         instaWin = mcts.check_instant_win(state) # check if can win in 1 move
         if instaWin != -1:
             print("MCTS chose move: ", instaWin+1)
-
             state.move(instaWin)
             mcts.move(instaWin)
         else:

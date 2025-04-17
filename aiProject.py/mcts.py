@@ -94,11 +94,11 @@ class MCTS:
         return True
 
     #simula aleatóriamente um jogo e retorna o vencedor
-    def roll_out(self, state: ConnectState) -> int:
+    def simulate(self, state: ConnectState) -> int:
         while not state.game_over():
             state.move(random.choice(state.get_legal_moves()))
 
-        return state.get_outcome()
+        return state.get_result()
 
     #faz backtrack aos nós escolhidos na fase de rollout e dá update aos seus valores
     def back_propagate(self, node: Node, turn: int, outcome: int) -> None:
@@ -121,7 +121,7 @@ class MCTS:
         num_rollouts = 0
         while time.process_time() - start_time < time_limit:
             node, state = self.select_node()
-            outcome = self.roll_out(state)
+            outcome = self.simulate(state)
             self.back_propagate(node, state.to_play, outcome)
             num_rollouts += 1
 
