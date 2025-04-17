@@ -132,4 +132,3 @@ class ConnectState:
 
         return GameMeta.OUTCOMES['one'] if self.check_win() == GameMeta.PLAYERS['one'] else GameMeta.OUTCOMES['two']
 
-    
