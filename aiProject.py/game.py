@@ -90,15 +90,17 @@ def playPvC():
         state.print_board()
 
         if state.game_over():
-            print("Player one ('X') won!")
+            result = state.get_result()
+            if result == GameMeta.OUTCOMES['one']:
+                print("Player one ('X') won!")
+            else:
+                print("Draw!")
             break
 
         print("Thinking...")
 
-        compIsWinner = False
         instaWin = mcts.check_instant_win(state) # check if can win in 1 move
         if instaWin != -1:
-            compIsWinner = True
             print("MCTS chose move: ", instaWin+1)
             state.move(instaWin)
             mcts.move(instaWin)
@@ -119,11 +121,13 @@ def playPvC():
 
         if state.game_over():
             state.print_board()
-            if compIsWinner:
+            result = state.get_result()
+            if result == GameMeta.OUTCOMES['two']:
                 print("Player two ('O') won!")
             else:
                 print("Draw!")
             break
+
 
         if not changed_To_Attack:
             num_Plays += 2

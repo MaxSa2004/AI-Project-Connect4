@@ -127,8 +127,8 @@ class ConnectState:
 
     #verifica quem ganhou ou se é empate
     def get_result(self):
-        if len(self.get_legal_moves()) == 0 and self.check_win() == 0:
+        winner = self.check_win()
+        if len(self.get_legal_moves()) == 0 and winner == 0:
             return GameMeta.OUTCOMES['draw']
-
-        return GameMeta.OUTCOMES['one'] if self.check_win() == GameMeta.PLAYERS['one'] else GameMeta.OUTCOMES['two']
+        return GameMeta.OUTCOMES['one'] if winner == GameMeta.PLAYERS['one'] else GameMeta.OUTCOMES['two']
 
