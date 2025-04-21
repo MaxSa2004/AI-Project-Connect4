@@ -95,8 +95,10 @@ def playPvC():
 
         print("Thinking...")
 
+        compIsWinner = False
         instaWin = mcts.check_instant_win(state) # check if can win in 1 move
         if instaWin != -1:
+            compIsWinner = True
             print("MCTS chose move: ", instaWin+1)
             state.move(instaWin)
             mcts.move(instaWin)
@@ -117,7 +119,10 @@ def playPvC():
 
         if state.game_over():
             state.print_board()
-            print("Player two ('O') won!")
+            if compIsWinner:
+                print("Player two ('O') won!")
+            else:
+                print("Draw!")
             break
 
         if not changed_To_Attack:
