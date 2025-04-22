@@ -71,6 +71,10 @@ class ID3TreeNumeric:
     def predict(self, X):
         return np.array([self.predict_one(x, self.root) for x in X])
 
+
+# Load the dataset
+ds = pd.read_csv('./iris.csv')
+
 X = ds.iloc[:, :-1].to_numpy()  # Features
 y = ds.iloc[:, -1].to_numpy()   # Labels
 
@@ -83,9 +87,6 @@ tree.fit(X_train, y_train)
 y_pred = tree.predict(X_test)
 
 print("Accuracy:", accuracy_score(y_test, y_pred))
-
-# Load the dataset
-ds = pd.read_csv('./iris.csv')
 
 # Show the first 5 rows
 print(ds.head())
