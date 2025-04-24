@@ -2,14 +2,21 @@ import json
 from mcts import MCTS
 from ConnectState import ConnectState
 from copy import deepcopy
-
+import os
 
 def board_to_list(board):
     return [row[:] for row in board]
 
-
 def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
     dataset = []
+
+    # Load existing data if file exists
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            try:
+                dataset = json.load(f)
+            except json.JSONDecodeError:
+                dataset = []
 
     for _ in range(num_games):
         state = ConnectState()
@@ -35,6 +42,7 @@ def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
     print(f"[✓] Dataset guardado em '{filename}' com {len(dataset)} pares.")
 
 
+
 if __name__ == "__main__":
     print("Starting sim...")
-    generate_dataset_json(2,5)
+    generate_dataset_json(1,5)
