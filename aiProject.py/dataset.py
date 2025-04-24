@@ -7,10 +7,13 @@ import os
 def board_to_list(board):
     return [row[:] for row in board]
 
+def get_player_symbol(player_num):
+    return 'X' if player_num == 1 else 'O'
+
 def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
     dataset = []
 
-    # Load existing data if file exists
+    # Carrega o dataset existente (se houver)
     if os.path.exists(filename):
         with open(filename, 'r') as f:
             try:
@@ -18,9 +21,13 @@ def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
             except json.JSONDecodeError:
                 dataset = []
 
-    for _ in range(num_games):
+    for game_index in range(num_games):
         state = ConnectState()
         mcts = MCTS(state)
+        move_count = 1
+
+        print(f"\n=== Início do Jogo {game_index + 1} ===\n")
+        state.print_board()
 
         while not state.game_over():
             current_board = deepcopy(state.get_board())
@@ -32,17 +39,21 @@ def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
                 "state": board_to_list(current_board),
                 "recommended_move": best_move
             })
-            print(best_move)
+
+            current_player = get_player_symbol(state.to_play)
+
+            print(f"\n Jogada {move_count} | Jogador '{current_player}' joga na coluna {best_move + 1}")
             state.move(best_move)
+            state.print_board()
+
             mcts.move(best_move)
+            move_count += 1
 
     with open(filename, 'w') as f:
         json.dump(dataset, f, indent=2)
 
-    print(f"[✓] Dataset guardado em '{filename}' com {len(dataset)} pares.")
-
-
+    print(f"\n[✓] Dataset guardado em '{filename}' com {len(dataset)} pares totais.")
 
 if __name__ == "__main__":
     print("Starting sim...")
-    generate_dataset_json(1,5)
+    generate_dataset_json(1, 5)
