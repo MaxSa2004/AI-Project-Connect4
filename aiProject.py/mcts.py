@@ -41,11 +41,24 @@ class MCTS:
         self.run_time = 0
         self.node_count = 0
         self.num_rollouts = 0
+        self.best_trivial = None  # armazena jogada imediata/defensiva
 
     # verfica se o computador pode ganhar numa jogada só
     def check_instant_win(self, state: ConnectState) -> int:
         for move in state.get_legal_moves():
             st = deepcopy(state)
+            st.move(move)
+            if st.game_over():
+                return move
+        return -1
+    
+    def check_block_opponent(self, state: ConnectState) -> int:
+        '''Se o oponente tem jogada de vitória imediata, retorna movimento para bloqueá-la.'''
+        opponent = 3 - state.to_play
+        for move in state.get_legal_moves():
+            st = deepcopy(state)
+            # força o próximo para oponente
+            st.to_play = opponent
             st.move(move)
             if st.game_over():
                 return move
@@ -116,6 +129,27 @@ class MCTS:
 
     #procura a melhor jogada por "time_limit" segundos
     def search(self, time_limit: int):
+        # 1) Vitória imediata
+        win = self.check_instant_win(self.root_state)
+        if win != -1:
+            self.run_time = 0
+            self.num_rollouts = 1
+            self.best_trivial = win
+            return
+        # 2) Bloquear vitória do oponente
+        block = self.check_block_opponent(self.root_state)
+        if block != -1:
+            self.run_time = 0
+            self.num_rollouts = 1
+            self.best_trivial = block
+            return
+        # 3) Única jogada possível
+        one = self.check_one_move_available(self.root_state)
+        if one != -1:
+            self.run_time = 0
+            self.num_rollouts = 1
+            self.best_trivial = one
+            return
         start_time = time.process_time()
 
         num_rollouts = 0
@@ -125,12 +159,16 @@ class MCTS:
             self.back_propagate(node, state.to_play, outcome)
             num_rollouts += 1
 
-        run_time = time.process_time() - start_time
-        self.run_time = run_time
+        self.run_time = time.process_time() - start_time
         self.num_rollouts = num_rollouts
+        self.best_trivial = None
 
     #retorna a melhor jogada que o mcts encontrou
     def best_move(self):
+        # Se root já concluída por heurística:
+        if self.best_trivial is not None:
+            return self.best_trivial
+        
         if self.root_state.game_over():
             return -1
 

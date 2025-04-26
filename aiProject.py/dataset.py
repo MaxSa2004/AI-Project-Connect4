@@ -25,6 +25,7 @@ def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
         state = ConnectState()
         mcts = MCTS(state)
         move_count = 1
+        changed_To_Attack = False # se o valor de C foi mudado ou não
 
         print(f"\n=== Início do Jogo {game_index + 1} ===\n")
         state.print_board()
@@ -49,6 +50,11 @@ def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
             mcts.move(best_move)
             move_count += 1
 
+            if not changed_To_Attack:
+                if move_count > 17:
+                    mcts.change_c_value()
+                    changed_To_Attack = True
+
     with open(filename, 'w') as f:
         json.dump(dataset, f, indent=2)
 
@@ -56,4 +62,4 @@ def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
 
 if __name__ == "__main__":
     print("Starting sim...")
-    generate_dataset_json(1, 5)
+    generate_dataset_json(10, 10)
