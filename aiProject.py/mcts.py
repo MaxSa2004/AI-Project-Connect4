@@ -171,12 +171,23 @@ class MCTS:
         
         if self.root_state.game_over():
             return -1
+        
+        safes = []
+        for move, node in self.root.children.items():
+            copy_state = deepcopy(self.root_state)
+            copy_state.move(move)
+            # Se o oponente não consegue ganhar depois da nossa jogada
+            if self.check_instant_win(copy_state) == -1:
+                safes.append(node)
 
-        max_value = max(self.root.children.values(), key=lambda n: n.N).N
-        max_nodes = [n for n in self.root.children.values() if n.N == max_value]
-        best_child = random.choice(max_nodes)
-
-        return best_child.move
+        if safes:
+            best_safe = max(safes, key=lambda n: n.value())
+            return best_safe.move
+        else:   
+            max_value = max(self.root.children.values(), key=lambda n: n.N).N
+            max_nodes = [n for n in self.root.children.values() if n.N == max_value]
+            best_child = random.choice(max_nodes)
+            return best_child.move
 
     #realiza (em definitivo) a melhor jogada que encontrou
     def move(self, move):
