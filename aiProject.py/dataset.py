@@ -62,4 +62,4 @@ def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
 
 if __name__ == "__main__":
     print("Starting sim...")
-    generate_dataset_json(5, 10)
+    generate_dataset_json(10, 10)
