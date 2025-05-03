@@ -190,55 +190,55 @@ def playCvC():
     mcts = MCTS(state)
     changed_To_Attack = False
     num_Plays = 0
+    print("Current state:")
+    state.print_board()
 
     while not state.game_over():
-        print("Current state:")
-        state.print_board()
+        # --- MCTS turn ---
+        print("Thinking (MCTS)...")
+        mcts.search(10)
+        num_rollouts, run_time = mcts.statistics()
+        print(f"Statistics: {num_rollouts} rollouts in {run_time:.2f} seconds")
 
-        new_state = np.array(state.get_board()).flatten()
+        mcts_move = mcts.best_move()
+        state.move(mcts_move)
+        mcts.move(mcts_move)
 
-        predicted_move = tree.predict(np.array([new_state]))[0]
-
-        legal_moves = state.get_legal_moves()
-
-        if predicted_move not in legal_moves:
-            state.move(legal_moves[random.randint(0, len(legal_moves)-1)])
-        else:
-            state.move(predicted_move)
-
-        mcts.move(predicted_move)
-
-        print("Tree chose to play in column: " + str(predicted_move+1))
-
+        print("MCTS chose column:", mcts_move + 1)
         state.print_board()
 
         if state.game_over():
             result = state.get_result()
             if result == GameMeta.OUTCOMES['one']:
-                print("Tree ('X') won!")
+                print("MCTS ('X') won!")
             else:
                 print("Draw!")
             break
 
-        print("Thinking...")
+        # --- Tree turn ---
+        new_state = np.array(state.get_board()).flatten()
+        predicted_move = tree.predict(np.array([new_state]))[0]
 
-        mcts.search(10)
-        num_rollouts, run_time = mcts.statistics()
-        print(f"Statistics: {num_rollouts} rollouts in {run_time:.2f} seconds")
-        move = mcts.best_move()
-        state.move(move)
-        mcts.move(move)
+        legal_moves = state.get_legal_moves()
+        if predicted_move not in legal_moves:
+            # fallback to random legal move
+            predicted_move = random.choice(legal_moves)
 
-        
+        state.move(predicted_move)
+        mcts.move(predicted_move)
+
+        print("Tree chose column:", predicted_move + 1)
+        state.print_board()
+
         if state.game_over():
-            state.print_board()
             result = state.get_result()
             if result == GameMeta.OUTCOMES['two']:
-                print("MCTS ('O') won!")
+                print("Tree ('O') won!")
             else:
                 print("Draw!")
             break
 
+        # Optionally adjust MCTS’s C parameter after a number of full turns
         if not changed_To_Attack:
             num_Plays += 2
             if num_Plays > 17:
