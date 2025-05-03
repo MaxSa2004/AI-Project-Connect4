@@ -176,10 +176,17 @@ class MCTS:
         for move, node in self.root.children.items():
             copy_state = deepcopy(self.root_state)
             copy_state.move(move)
-            # Se o oponente não consegue ganhar depois da nossa jogada
+            # se o oponente não consegue ganhar depois da nossa jogada
             if self.check_instant_win(copy_state) == -1:
                 safes.append(node)
-
+        '''
+        # test print to check safes
+        print("safes: ")
+        s = []
+        for i in range(len(safes)):
+            s.append(safes[i].move)
+        print(s)
+        '''
         if safes:
             best_safe = max(safes, key=lambda n: n.value())
             return best_safe.move
