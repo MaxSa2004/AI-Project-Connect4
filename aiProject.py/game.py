@@ -33,7 +33,11 @@ def playPvP():
         state.print_board()
 
         if state.game_over():
-            print("Player one ('X') won!")
+            result = state.get_result()
+            if result == GameMeta.OUTCOMES['one']:
+                print("Player one ('X') won!")
+            else:
+                print("Draw!")
             break
 
         # --- Player 2 Move ---
@@ -57,7 +61,11 @@ def playPvP():
         state.print_board()
 
         if state.game_over():
-            print("Player two ('O') won!")
+            result = state.get_result()
+            if result == GameMeta.OUTCOMES['two']:
+                print("Player two ('O') won!")
+            else:
+                print("Draw!")
             break
 
 
