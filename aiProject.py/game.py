@@ -79,6 +79,7 @@ def playPvC1():
         print("Current state:")
         state.print_board()
 
+        # --- Human Player Move ---
         while True:
             user_input = input("Enter a move: ")
             # Check if input is blank or not a number
@@ -95,9 +96,9 @@ def playPvC1():
                 continue
             break  # valid input and legal move
 
+        # --- MCTS Move ---
         state.move(user_move)
         mcts.move(user_move)
-
         state.print_board()
 
         if state.game_over():
@@ -141,6 +142,7 @@ def playPvC2():
         print("Current state:")
         state.print_board()
 
+        # --- Human Player Move ---
         while True:
             user_input = input("Enter a move: ")
             # Check if input is blank or not a number
@@ -158,7 +160,6 @@ def playPvC2():
             break  # valid input and legal move
 
         state.move(user_move)
-
         state.print_board()
 
         if state.game_over():
@@ -169,10 +170,9 @@ def playPvC2():
                 print("Draw!")
             break
 
+        # --- Decision Tree Move ---
         new_state = np.array(state.get_board()).flatten()
-
         predicted_move = tree.predict(np.array([new_state]))[0]
-
         legal_moves = state.get_legal_moves()
 
         if predicted_move not in legal_moves:
@@ -182,7 +182,6 @@ def playPvC2():
 
         print("Tree chose to play in column: " + str(predicted_move+1))
 
-        
         if state.game_over():
             state.print_board()
             result = state.get_result()
