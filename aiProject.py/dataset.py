@@ -7,13 +7,14 @@ import os
 def board_to_list(board):
     return [row[:] for row in board]
 
+# return player symbol
 def get_player_symbol(player_num):
     return 'X' if player_num == 1 else 'O'
 
 def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
     dataset = []
 
-    # Carrega o dataset existente (se houver)
+    # carrega o dataset existente (se houver) para continuar a adicionar pares
     if os.path.exists(filename):
         with open(filename, 'r') as f:
             try:
@@ -36,13 +37,14 @@ def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
             mcts.search(search_time)
             best_move = mcts.best_move()
 
+            # add (state, move) pair to dataset list 
             dataset.append({
                 "state": board_to_list(current_board),
                 "recommended_move": best_move
             })
 
+            # print move made and board state
             current_player = get_player_symbol(state.to_play)
-
             print(f"\n Jogada {move_count} | Jogador '{current_player}' joga na coluna {best_move + 1}")
             state.move(best_move)
             state.print_board()
@@ -55,9 +57,11 @@ def generate_dataset_json(num_games, search_time, filename="mcts_dataset.json"):
                     mcts.change_c_value()
                     changed_To_Attack = True
 
+    # write dataset to file
     with open(filename, 'w') as f:
         json.dump(dataset, f, indent=2)
 
+    # print current total num of pairs
     print(f"\n[✓] Dataset guardado em '{filename}' com {len(dataset)} pares totais.")
 
 if __name__ == "__main__":
