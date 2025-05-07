@@ -1,8 +1,5 @@
 import numpy as np
 from collections import Counter
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
 import json
 
 def entropy(y):
@@ -72,6 +69,14 @@ class ID3TreeNumeric:
     def predict(self, X):
         return np.array([self.predict_one(x, self.root) for x in X])
 
+# custom data split function (manual train-test split)
+def manual_train_test_split(X, y, test_size=0.2):
+    indices = np.arange(len(X))
+    np.random.shuffle(indices)
+    split = int(len(X) * (1 - test_size))
+    train_indices = indices[:split]
+    test_indices = indices[split:]
+    return X[train_indices], X[test_indices], y[train_indices], y[test_indices]
 
 def trainTree():
     with open('mcts_dataset.json') as f:
@@ -89,7 +94,7 @@ def trainTree():
 
     X = np.array(X)
     y = np.array(y)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = manual_train_test_split(X, y, test_size=0.2)
     tree = ID3TreeNumeric()
     tree.fit(X_train, y_train)
     print("Tree trained successfully.")
