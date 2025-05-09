@@ -262,7 +262,7 @@ def playCvC():
     4. CvC
 '''
 if __name__ == "__main__":
-    print("Welcome to Connect 4!\nPlease select one of the following game modes by selecting its corresponding number:\n1. Human vs. Human\n2. Human vs. Computer(mcts)\n3. Human vs. Computer(tree)\n4. Computer vs. Computer")
+    print("Welcome to Connect 4!\nPlease select one of the following game modes by selecting its corresponding number:\n1. Human vs. Human\n2. Human vs. Computer(MCTS)\n3. Human vs. Computer(Tree)\n4. Computer(MCTS) vs. Computer(Tree)")
     GameMeta.GAMEMODE = int(input("Select option:"))
     while 1 > GameMeta.GAMEMODE or GameMeta.GAMEMODE > 4:
         print("Invalid Gamemode")
