@@ -100,6 +100,8 @@ def trainTree():
     print("Tree trained successfully.")
     return tree
 
+
+# code used in iris practice dataset... the ID3 implementation above was used for iris dataset and is now modified for Connect4 dataset
 '''
 # Load the dataset
 ds = pd.read_csv('../iris.csv')

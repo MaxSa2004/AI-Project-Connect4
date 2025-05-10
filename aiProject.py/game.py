@@ -5,6 +5,7 @@ from tree import trainTree
 import numpy as np
 import random
 
+
 def playPvP():
     state = ConnectState()
 
@@ -72,7 +73,7 @@ def playPvP():
 def playPvC1():
     state = ConnectState()
     mcts = MCTS(state)
-    changed_To_Attack = False # se o valor de C foi mudado ou não
+    changed_To_Attack = False  # se o valor de C foi mudado ou não
     num_Plays = 0
 
     while not state.game_over():
@@ -118,7 +119,6 @@ def playPvC1():
         state.move(move)
         mcts.move(move)
 
-        
         if state.game_over():
             state.print_board()
             result = state.get_result()
@@ -133,6 +133,7 @@ def playPvC1():
             if num_Plays > 17:
                 mcts.change_c_value()
                 changed_To_Attack = True
+
 
 def playPvC2():
     state = ConnectState()
@@ -190,6 +191,7 @@ def playPvC2():
             else:
                 print("Draw!")
             break
+
 
 def playCvC():
     state = ConnectState()
@@ -251,7 +253,6 @@ def playCvC():
             if num_Plays > 17:
                 mcts.change_c_value()
                 changed_To_Attack = True
-    
 
 
 '''
@@ -262,7 +263,8 @@ def playCvC():
     4. CvC
 '''
 if __name__ == "__main__":
-    print("Welcome to Connect 4!\nPlease select one of the following game modes by selecting its corresponding number:\n1. Human vs. Human\n2. Human vs. Computer(MCTS)\n3. Human vs. Computer(Tree)\n4. Computer(MCTS) vs. Computer(Tree)")
+    print("Welcome to Connect 4!\nPlease select one of the following game modes by selecting its corresponding number:\n" \
+    "1. Human vs. Human\n2. Human vs. Computer(MCTS)\n3. Human vs. Computer(Tree)\n4. Computer(MCTS) vs. Computer(Tree)")
     GameMeta.GAMEMODE = int(input("Select option:"))
     while 1 > GameMeta.GAMEMODE or GameMeta.GAMEMODE > 4:
         print("Invalid Gamemode")
