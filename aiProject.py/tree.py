@@ -1,6 +1,7 @@
 import numpy as np
 from collections import Counter
 import json
+from sklearn.metrics import accuracy_score # used to record accuracy of predictions
 
 def entropy(y):
     counts = Counter(y)
@@ -21,8 +22,14 @@ class Node:
         self.label = label
 
 class ID3TreeNumeric:
+    acc_score = 0
     def fit(self, X, y):
         self.root = self._build_tree(X, y)
+
+    # calc accuracy of predictions
+    def score(self, X, y_true):
+        y_pred = self.predict(X)
+        return accuracy_score(y_true, y_pred)
 
     def _build_tree(self, X, y):
         if len(set(y)) == 1:
@@ -78,9 +85,13 @@ def manual_train_test_split(X, y, test_size=0.2):
     test_indices = indices[split:]
     return X[train_indices], X[test_indices], y[train_indices], y[test_indices]
 
-def trainTree():
+def trainTree(size=None):
     with open('mcts_dataset.json') as f:
         data = json.load(f)
+        
+    # Limit to the specified size if given
+    if size is not None:
+        data = data[:size]
 
     # Convert to features (X) and labels (y)
     X = []
@@ -97,6 +108,7 @@ def trainTree():
     X_train, X_test, y_train, y_test = manual_train_test_split(X, y, test_size=0.2)
     tree = ID3TreeNumeric()
     tree.fit(X_train, y_train)
+    tree.acc_score = tree.score(X_test, y_test) # set accuracy score variable for the tree
     print("Tree trained successfully.")
     return tree
 
