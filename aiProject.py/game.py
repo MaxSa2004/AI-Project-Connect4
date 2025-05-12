@@ -8,11 +8,9 @@ import random
 
 def playPvP():
     state = ConnectState()
-
+    print("Current state:")
+    state.print_board()
     while not state.game_over():
-        print("Current state:")
-        state.print_board()
-
         # --- Player 1 Move ---
         while True:
             p1_input = input("Player 1 ('X') enter a move: ")
@@ -79,7 +77,7 @@ def playPvC1():
     while not state.game_over():
         print("Current state:")
         state.print_board()
-
+        
         # --- Human Player Move ---
         while True:
             user_input = input("Enter a move: ")
@@ -116,6 +114,7 @@ def playPvC1():
         num_rollouts, run_time = mcts.statistics()
         print(f"Statistics: {num_rollouts} rollouts in {run_time:.2f} seconds")
         move = mcts.best_move()
+        print(f"MCTS chose move: {move}")
         state.move(move)
         mcts.move(move)
 
