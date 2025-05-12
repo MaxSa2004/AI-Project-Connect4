@@ -17,14 +17,6 @@ def treeAccuracyStats(runs=10):
     plt.figure(figsize=(10, 6))
     plt.plot(np.arange(1, runs + 1), scores, marker='o', linestyle='-', color='royalblue')
     plt.axhline(mean_score, color='red', linestyle='--', label=f'Mean: {mean_score:.3f}')
-    plt.fill_between(
-        np.arange(1, runs + 1), 
-        mean_score - std_score, 
-        mean_score + std_score, 
-        color='orange', 
-        alpha=0.2, 
-        label='1 Std. Dev.'
-    )
     plt.title('Decision Tree Accuracy over Multiple Runs')
     plt.xlabel('Run')
     plt.ylabel('Accuracy')
