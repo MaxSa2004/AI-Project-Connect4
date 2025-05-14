@@ -11,7 +11,6 @@ def treeAccuracyStats(runs=10):
 
     # calculate mean and standard deviation
     mean_score = np.mean(scores)
-    std_score  = np.std(scores, ddof=1)  # sample standard deviation
 
     # plotting
     plt.figure(figsize=(10, 6))
@@ -25,7 +24,7 @@ def treeAccuracyStats(runs=10):
     plt.show()
 
 def treeAccuracyStats_DiffSize(runs=10):
-    # Sizes of dataset to test
+    # sizes of dataset to test
     sizes = [10000, 20000, 30000]
     size_scores = {size: [] for size in sizes}
     colors = ['blue', 'green', 'purple']  # Colors for each size
@@ -36,19 +35,18 @@ def treeAccuracyStats_DiffSize(runs=10):
             tree = trainTree(size=size)
             size_scores[size].append(tree.acc_score)
 
-    # Plotting
+    # plotting
     plt.figure(figsize=(12, 7))
     
     for size, color in zip(sizes, colors):
         scores = size_scores[size]
         runs = np.arange(1, len(scores) + 1)
         mean_score = np.mean(scores)
-        std_score = np.std(scores, ddof=1)
         
-        # Plotting the accuracy scores
+        # plotting accuracy scores
         plt.plot(runs, scores, marker='o', linestyle='-', color=color, label=f'{size} samples')
 
-        # Mean line
+        # mean line
         plt.axhline(mean_score, color=color, linestyle='--', alpha=0.6, label=f'Mean: {mean_score:.3f}')
         plt.text(runs[-1] + 0.2, mean_score, f'{mean_score:.3f}', color=color)
 
