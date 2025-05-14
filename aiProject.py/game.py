@@ -114,7 +114,7 @@ def playPvC1():
         num_rollouts, run_time = mcts.statistics()
         print(f"Statistics: {num_rollouts} rollouts in {run_time:.2f} seconds")
         move = mcts.best_move()
-        print(f"MCTS chose move: {move}")
+        print(f"MCTS chose move: {move+1}")
         state.move(move)
         mcts.move(move)
 
